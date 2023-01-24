@@ -6,7 +6,7 @@ pipeline{
         pollSCM('* * * * *')
     }*/
     parameters{
-        choice(name: 'Branch_Name', choices: ['dev', 'qa', 'uat', 'prod', 'master'], description: 'Selecting branch to build the dokcer image')
+        choice(name: 'Branch_Name', choices: ['dev', 'qa', 'uat', 'prod'], description: 'Selecting branch to build the dokcer image')
     }
     stages{
         stage('clone'){
@@ -64,14 +64,6 @@ pipeline{
                               docker tag ${default_image_name_prod}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
                               docker push ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
                               echo image build, tag and push is completed for "${params.Branch_Name}" branch
-                              docker image ls
-                              """
-                    }
-                    else if (params['Branch_Name'] == "master"){
-                        sh """
-                              docker image build -t ${default_image_name_prod}:${default_image_tag} .
-                              docker tag ${default_image_name_prod}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
-                              echo image build and tag is completed for "${params.Branch_Name}" branch
                               docker image ls
                               """
                     }
