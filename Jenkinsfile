@@ -6,59 +6,79 @@ pipeline{
         pollSCM('* * * * *')
     }*/
     parameters{
-        choice(name: 'Branch_Name', choices: ['dev', 'qa', 'uat', 'prod', 'main'], description: 'Selecting branch to build the dokcer image')
+        choice(name: 'Branch_Name', choices: ['dev', 'qa', 'uat', 'prod', 'master'], description: 'Selecting branch to build the dokcer image')
     }
     stages{
+        stage('clone'){
+            steps{
+                git url: 'https://github.com/tarunkumarpendem/StudentCoursesRestAPI.git',
+                    branch: "${params.Branch_Name}"
+            }
+        }
+        // stage('Removing existing images'){
+        //     steps{
+        //         sh """
+        //               docker image rm $(docker image ls -q)
+        //             """  
+        //     }
+        // }
         stage('Image build, Tag and push'){
             steps{
                 script{
                     def ECR = "097018296722.dkr.ecr.us-east-1.amazonaws.com/aws-ecr"
-                    def default_image_name_dev = "StudentCoursesRestAPI-dev"
-                    def default_image_name_qa = "StudentCoursesRestAPI-qa"
-                    def default_image_name_uat = "StudentCoursesRestAPI-uat"
-                    def default_image_name_prod = "StudentCoursesRestAPI-prod"
+                    def default_image_name_dev = "student-courses-rest-api/dev"
+                    def default_image_name_qa = "student-courses-rest-api/qa"
+                    def default_image_name_uat = "student-courses-rest-api/uat"
+                    def default_image_name_prod = "student-courses-rest-api/prod"
                     def default_image_tag = "1.0"
-                    if (params['Branch_Name' == "dev"]){
+                    if (params['Branch_Name'] == "dev"){
                         sh """
-                              docker image build -t ${default_image_name_dev}:${default_image_tag}
-                              docker tag ${default_image_name_dev}:${default_image_tag} ${REG}:${params.Branch_Name}-${BUILD_NUMBER}
-                              docker push ${REG}:${params.Branch_Name}-${BUILD_NUMBER}
-                              echo image build, tag and push is completed for ${params.Branch_Name}
+                              docker image build -t ${default_image_name_dev}:${default_image_tag} .
+                              docker tag ${default_image_name_dev}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              docker push ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              echo image build, tag and push is completed for "${params.Branch_Name}" branch
+                              docker image ls
                               """
                     }
-                    else if (params['Branch_Name' == "qa"]){
+                    else if (params['Branch_Name'] == "qa"){
                         sh """
-                              docker image build -t ${default_image_name_qa}:${default_image_tag}
-                              docker tag ${default_image_name_qa}:${default_image_tag} ${REG}:${params.Branch_Name}-${BUILD_NUMBER}
-                              docker push ${REG}:${params.Branch_Name}-${BUILD_NUMBER}
-                              echo image build, tag and push is completed for ${params.Branch_Name}
+                              docker image build -t ${default_image_name_qa}:${default_image_tag} .
+                              docker tag ${default_image_name_qa}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              docker push ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              echo image build, tag and push is completed for "${params.Branch_Name}" branch
+                              docker image ls
                               """
                     }
-                    else if (params['Branch_Name' == "uat"]){
+                    else if (params['Branch_Name'] == "uat"){
                         sh """
-                              docker image build -t ${default_image_name_uat}:${default_image_tag}
-                              docker tag ${default_image_name_uat}:${default_image_tag} ${REG}:${params.Branch_Name}-${BUILD_NUMBER}
-                              docker push ${REG}:${params.Branch_Name}-${BUILD_NUMBER}
-                              echo image build, tag and push is completed for ${params.Branch_Name}
+                              docker image build -t ${default_image_name_uat}:${default_image_tag} .
+                              docker tag ${default_image_name_uat}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              docker push ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              echo image build, tag and push is completed for "${params.Branch_Name}" branch
+                              docker image ls
                               """
                     }
-                    else if (params['Branch_Name' == "prod"]){
+                    else if (params['Branch_Name'] == "prod"){
                         sh """
-                              docker image build -t ${default_image_name_prod}:${default_image_tag}
-                              docker tag ${default_image_name_prod}:${default_image_tag} ${REG}:${params.Branch_Name}-${BUILD_NUMBER}
-                              docker push ${REG}:${params.Branch_Name}-${BUILD_NUMBER}
-                              echo image build, tag and push is completed for ${params.Branch_Name}
+                              docker image build -t ${default_image_name_prod}:${default_image_tag} .
+                              docker tag ${default_image_name_prod}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              docker push ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              echo image build, tag and push is completed for "${params.Branch_Name}" branch
+                              docker image ls
                               """
                     }
-                    else if (params['Branch_Name' == "main"]){
+                    else if (params['Branch_Name'] == "master"){
                         sh """
-                              docker image build -t ${default_image_name_prod}:${default_image_tag}
-                              docker tag ${default_image_name_prod}:${default_image_tag} ${REG}:${params.Branch_Name}-${BUILD_NUMBER}
-                              echo image build and tag is completed for ${params.Branch_Name}
+                              docker image build -t ${default_image_name_prod}:${default_image_tag} .
+                              docker tag ${default_image_name_prod}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              echo image build and tag is completed for "${params.Branch_Name}" branch
+                              docker image ls
                               """
                     }
                     else{
-                        echo image build is not applicable
+                        sh """
+                              echo image build is failed for ${env.BUILD_NUMBER}
+                            """  
                     }
                 }
             }
