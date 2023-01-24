@@ -75,6 +75,39 @@ pipeline{
                 }
             }
         }
+        stage('clone'){
+            agent{
+                label 'node-2-terraform'
+            }
+            steps{
+                git url: 'https://github.com/tarunkumarpendem/learn-terraform-provision-eks-cluster.git'
+                    branch: 'main'
+            }
+        }
+        stage('creating EKS Cluster'){
+            agent{
+                label 'node-2-terraform'
+            }
+            steps{
+                sh """
+                      terraform init
+                      terraform apply -auto-approve
+                    """  
+            }
+        }
+        stage('Deployments'){
+            agent{
+                label 'k8s'
+            }
+            steps{
+                sh """
+                      kubectl apply -f ./Manifests/others
+                      kubectl apply -f ./Manifests/database
+                      kubectl apply -f ./Manifests/base/app-deploy.yaml
+                      kubectl apply -f ./Manifests/base/app-svc.yaml
+                    """  
+            }
+        }
     }
     post{
         always{

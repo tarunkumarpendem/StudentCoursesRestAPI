@@ -1,0 +1,42 @@
+---
+apiVersion: v1 
+kind: Namespace
+metadata:
+  name: dev-namespace
+spec:
+  phase: Active
+  conditions:
+    - type: NamespaceContentRemaining
+
+
+---
+apiVersion: v1 
+kind: Namespace
+metadata:
+  name: qa-namespace
+spec:
+  phase: Active
+  conditions:
+    - type: NamespaceContentRemaining
+
+
+---
+apiVersion: v1 
+kind: Namespace
+metadata:
+  name: uat-namespace
+spec:
+  phase: Active
+  conditions:
+    - type: NamespaceContentRemaining    
+
+
+---
+apiVersion: v1 
+kind: Namespace
+metadata:
+  name: prod-namespace
+spec:
+  phase: Active
+  conditions:
+    - type: NamespaceContentRemaining    
