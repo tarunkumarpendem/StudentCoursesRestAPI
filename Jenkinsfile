@@ -75,7 +75,7 @@ pipeline{
                 }
             }
         }
-        stage('clone'){
+        /*stage('clone'){
             agent{
                 label 'node-2-terraform'
             }
@@ -107,7 +107,7 @@ pipeline{
                       kubectl apply -f ./Manifests/base/app-svc.yaml
                     """  
             }
-        }
+        }*/
     }
     post{
         always{
