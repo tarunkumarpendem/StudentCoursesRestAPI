@@ -34,8 +34,8 @@ pipeline{
                     if (params['Branch_Name'] == "dev"){
                         sh """
                               docker image build -t ${default_image_name_dev}:${default_image_tag} .
-                              docker tag ${default_image_name_dev}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
-                              docker push ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              docker tag ${default_image_name_dev}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_URL}-${JOB_NAME}
+                              docker push ${ECR}:${params.Branch_Name}-${BUILD_URL}-${JOB_NAME}
                               echo image build, tag and push is completed for "${params.Branch_Name}" branch
                               docker image ls
                               """
@@ -43,8 +43,8 @@ pipeline{
                     else if (params['Branch_Name'] == "qa"){
                         sh """
                               docker image build -t ${default_image_name_qa}:${default_image_tag} .
-                              docker tag ${default_image_name_qa}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
-                              docker push ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              docker tag ${default_image_name_qa}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_URL}-${JOB_NAME}
+                              docker push ${ECR}:${params.Branch_Name}-${BUILD_URL}-${JOB_NAME}
                               echo image build, tag and push is completed for "${params.Branch_Name}" branch
                               docker image ls
                               """
@@ -52,8 +52,8 @@ pipeline{
                     else if (params['Branch_Name'] == "uat"){
                         sh """
                               docker image build -t ${default_image_name_uat}:${default_image_tag} .
-                              docker tag ${default_image_name_uat}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
-                              docker push ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              docker tag ${default_image_name_uat}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_URL}-${JOB_NAME}
+                              docker push ${ECR}:${params.Branch_Name}-${BUILD_URL}-${JOB_NAME}
                               echo image build, tag and push is completed for "${params.Branch_Name}" branch
                               docker image ls
                               """
@@ -61,8 +61,8 @@ pipeline{
                     else if (params['Branch_Name'] == "prod"){
                         sh """
                               docker image build -t ${default_image_name_prod}:${default_image_tag} .
-                              docker tag ${default_image_name_prod}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
-                              docker push ${ECR}:${params.Branch_Name}-${BUILD_NUMBER}
+                              docker tag ${default_image_name_prod}:${default_image_tag} ${ECR}:${params.Branch_Name}-${BUILD_URL}-${JOB_NAME}
+                              docker push ${ECR}:${params.Branch_Name}-${BUILD_URL}-${JOB_NAME}
                               echo image build, tag and push is completed for "${params.Branch_Name}" branch
                               docker image ls
                               """
