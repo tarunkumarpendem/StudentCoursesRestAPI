@@ -37,6 +37,7 @@ pipeline{
                               docker tag ${default_image_name_dev}:${default_image_tag} ${ECR}:${params.Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               docker push ${ECR}:${params.Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               echo image build, tag and push is completed for "${params.Branch_Name}" branch
+                              docker image rm -f ${default_image_name_dev}:${default_image_tag}
                               docker image ls
                               """
                     }
