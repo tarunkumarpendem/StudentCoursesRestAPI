@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - image: 097018296722.dkr.ecr.us-east-1.amazonaws.com/aws-ecr:dev-test-39
-          name: 
+          name: studentcourses
           ports:
             - containerPort: 8080
               protocol: TCP  
