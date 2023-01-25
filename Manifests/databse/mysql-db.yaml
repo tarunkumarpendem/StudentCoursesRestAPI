@@ -27,6 +27,7 @@ spec:
             claimName: mysql-pvc 
       containers:
         - image: mysql:5.7.41
+          name: mysql
           ports:
             - containerPort: 3306
               protocol: TCP 

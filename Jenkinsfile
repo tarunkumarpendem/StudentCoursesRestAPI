@@ -1,20 +1,22 @@
 pipeline{
-    agent{
-        label 'node-1'
-    }
+    agent none
     /*triggers{
         pollSCM('* * * * *')
     }*/
     parameters{
-        choice(name: 'Branch_Name', choices: ['dev', 'qa', 'uat', 'prod'], description: 'Selecting branch to build the dokcer image')
+        //choice(name: 'Branch_Name', choices: ['dev', 'qa', 'uat', 'prod'], description: 'Selecting branch to build the docker image')
+        choice(name: 'Infra_Branch_Name', choices: ['main'], description: 'Selecting branch to build the EKS')
     }
     stages{
-        stage('clone'){
+        /*stage('clone'){
+            agent{
+                label 'node-1'
+            }
             steps{
                 git url: 'https://github.com/tarunkumarpendem/StudentCoursesRestAPI.git',
                     branch: "${params.Branch_Name}"
             }
-        }
+        }*/
         // stage('Removing existing images'){
         //     steps{
         //         sh """
@@ -22,7 +24,10 @@ pipeline{
         //             """  
         //     }
         // }
-        stage('Image build, Tag and push'){
+        /*stage('Image build, Tag and push'){
+            agent{
+                label 'node-1'
+            }
             steps{
                 script{
                     def ECR = "097018296722.dkr.ecr.us-east-1.amazonaws.com/aws-ecr"
@@ -78,19 +83,37 @@ pipeline{
                     }
                 }
             }
-        }
-        /*stage('clone'){
+        }*/
+        // stage('kubectl and eksctl installation'){
+        //     agent{
+        //         label 'node-2-terraform'
+        //     }
+        //     steps{
+        //         sh """
+        //               curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.15/2023-01-11/bin/linux/amd64/kubectl
+        //               openssl sha1 -sha256 kubectl
+        //               chmod +x ./kubectl
+        //               mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+        //               echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+        //               kubectl version --short --client
+        //               curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+        //               sudo mv /tmp/eksctl /usr/local/bin
+        //               eksctl version
+        //             """  
+        //     }
+        // }
+        stage('git clone'){
             agent{
-                label 'node-2-terraform'
+                label 'node-2'
             }
             steps{
-                git url: 'https://github.com/tarunkumarpendem/learn-terraform-provision-eks-cluster.git'
-                    branch: 'main'
+                git url: 'https://github.com/tarunkumarpendem/learn-terraform-provision-eks-cluster.git',
+                    branch: "${params.Infra_Branch_Name}"
             }
         }
-        stage('creating EKS Cluster'){
+        stage('Creating EKS Cluster'){
             agent{
-                label 'node-2-terraform'
+                label 'node-2'
             }
             steps{
                 sh """
@@ -99,9 +122,9 @@ pipeline{
                     """  
             }
         }
-        stage('Deployments'){
+        /*stage('Deployments'){
             agent{
-                label 'k8s'
+                label 'node-2'
             }
             steps{
                 sh """
@@ -113,7 +136,7 @@ pipeline{
             }
         }*/
     }
-    post{
+    /*post{
         always{
             echo 'build completed'
             mail to: 'tarunkumarpendem22@gmail.com',
@@ -135,5 +158,5 @@ pipeline{
                  body: """Build is successfully completed for $env.BUILD_NUMBER
                           $env.BUILD_URL"""
         }
-    }
+    }*/
 }
