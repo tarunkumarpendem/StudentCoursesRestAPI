@@ -1,0 +1,40 @@
+--- 
+pool: 
+  name: 'Azure Pipelines'
+  vmImage: 'ubuntu-20.04'
+
+trigger: 
+  - master
+
+parameters:
+  - name: DockerHubRegistry
+    default: DockerHub_service_connection
+    type: string
+  - name: DockerHubRepository
+    default: tarunkumarpendem/studentcourses
+    type: string
+
+variables: 
+  - name: image_tag
+    value: 19thfeb2k23    
+
+stages:
+  - stage: 'Build_and_Push'
+    displayName: 'Docker image build and push to DockerHub'
+    jobs:
+      - job: 'Build'
+        displayName: 'Docker image build'
+        steps:
+          - task: Docker@2
+            inputs:
+              command: 'build'
+      - job: 'push'
+        displayName: 'Docker image push'
+        steps:
+          - task: Docker@2
+            inputs:
+              command: 'push'
+              containerRegistry: "{{ parameters.DockerHubRegistry }}"
+              repository: "{{ DockerHubRepository }}"
+              tags: $(image_tag)         
+            
