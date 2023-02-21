@@ -47,6 +47,12 @@ spec:
           readinessProbe:
             timeoutSeconds: 5
             periodSeconds: 5
+            initialDelaySeconds: 1
+            successThreshold: 1
+            failureThreshold: 1
+            tcpSocket:
+              host:
+              port: 3306
 
 
 
