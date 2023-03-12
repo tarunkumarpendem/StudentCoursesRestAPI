@@ -3,20 +3,20 @@ pipeline{
         label 'docker'
     }
     triggers{
-        pollSCM('* * * * *')
+        cron('* 15 * * *')
     }
     stages{
         stage('clone'){
             steps{
                 git url: 'https://github.com/tarunkumarpendem/StudentCoursesRestAPI.git',
-                    branch: 'develop'
+                    branch: 'sprint_1'
             }
         }
         stage('image build and push'){
             steps{
                 sh """
-                      docker image build -t tarunkumarpendem/student-api:12-03-2023 .
-                      docker push tarunkumarpendem/student-api:12-03-2023
+                      docker image build -t tarunkumarpendem/student-api:12-03-2023-release .
+                      docker push tarunkumarpendem/student-api:12-03-2023-release
                       docker image ls
                     """  
             }
