@@ -18,7 +18,7 @@ pipeline{
                       docker image build -t tarunkumarpendem/student-api:12-03-2023 .
                       docker push tarunkumarpendem/student-api:12-03-2023
                       docker image rm -f tarunkumarpendem/spc:12-03-2023
-                      docker image ls
+                      docker image ls 
                     """  
             }
         }
