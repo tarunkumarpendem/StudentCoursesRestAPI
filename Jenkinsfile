@@ -3,7 +3,7 @@ pipeline{
         label 'docker'
     }
     triggers{
-        cron('15 08 * * 7')
+        cron('45 08 * * 7')
     }
     stages{
         stage('clone'){
