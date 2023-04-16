@@ -228,8 +228,8 @@ pipeline{
                     else if (params['Build_Branch_Name'] == "master"){
                         sh """
                               docker build -t ${prod_image_name}:${default_image_tag} .
-                              docker tag ${prod_image_name}:${default_image_tag} ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod
-                              docker push ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod
+                              docker tag ${prod_image_name}:${default_image_tag} ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod-${params.Image_Version}
+                              docker push ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod-${params.Image_Version}
                               echo image build, tag and push to ${ECR_REGISTRY} is completed in ${params.Build_Branch_Name} branch for ${JOB_NAME}
                               docker image ls
                               docker image rm -f ${prod_image_name}:${default_image_tag}
