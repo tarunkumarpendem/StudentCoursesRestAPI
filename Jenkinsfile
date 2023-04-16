@@ -195,6 +195,7 @@ pipeline{
                               docker tag ${dev_image_name}:${default_image_tag} ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               docker push ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               echo image build, tag and push to ${ECR_REGISTRY} is completed in ${params.Build_Branch_Name} branch for ${JOB_NAME}
+                              docker image ls
                               docker image rm -f ${dev_image_name}:${default_image_tag}
                               docker image rm -f ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               docker image ls
@@ -206,6 +207,7 @@ pipeline{
                               docker tag ${qa_image_name}:${default_image_tag} ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               docker push ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               echo image build, tag and push to ${ECR_REGISTRY} is completed in ${params.Build_Branch_Name} branch for ${JOB_NAME}
+                              docker image ls
                               docker image rm -f ${qa_image_name}:${default_image_tag}
                               docker image rm -f ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               docker image ls
@@ -217,6 +219,7 @@ pipeline{
                               docker tag ${uat_image_name}:${default_image_tag} ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               docker push ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               echo image build, tag and push to ${ECR_REGISTRY} is completed in ${params.Build_Branch_Name} branch for ${JOB_NAME}
+                              docker image ls
                               docker image rm -f ${uat_image_name}:${default_image_tag}
                               docker image rm -f ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}
                               docker image ls
@@ -228,6 +231,7 @@ pipeline{
                               docker tag ${prod_image_name}:${default_image_tag} ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod
                               docker push ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod
                               echo image build, tag and push to ${ECR_REGISTRY} is completed in ${params.Build_Branch_Name} branch for ${JOB_NAME}
+                              docker image ls
                               docker image rm -f ${prod_image_name}:${default_image_tag}
                               docker image rm -f ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod-${params.Image_Version}
                               docker image ls
