@@ -170,7 +170,7 @@ pipeline{
         pollSCM('* * * * *')
     }
     parameters{
-        choice(name: 'Build_Branch_Name', choices: ['dev', 'qa', 'uat', 'master'], description: 'Selecting branch to build the docker image')
+        choice(name: 'Build_Branch_Name', choices: ['dev', 'qa', 'uat', 'master', 'prod'], description: 'Selecting branch to build the docker image')
     }
     stages{
         stage('Clone'){
