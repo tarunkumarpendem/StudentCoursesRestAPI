@@ -171,6 +171,7 @@ pipeline{
     }
     parameters{
         choice(name: 'Build_Branch_Name', choices: ['dev', 'qa', 'uat', 'master', 'prod'], description: 'Selecting branch to build the docker image')
+        choice(name: 'Image_Version', choices: ['v1.0', 'v1.1', 'v1.2', 'v1.3', 'v1.5', 'v1.6'], description: 'Selecting image version')
     }
     stages{
         stage('Clone'){
@@ -228,7 +229,7 @@ pipeline{
                               docker push ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod
                               echo image build, tag and push to ${ECR_REGISTRY} is completed in ${params.Build_Branch_Name} branch for ${JOB_NAME}
                               docker image rm -f ${prod_image_name}:${default_image_tag}
-                              docker image rm -f ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod
+                              docker image rm -f ${ECR_REGISTRY}:${params.Build_Branch_Name}-${JOB_NAME}-${BUILD_ID}-prod-${params.Image_Version}
                               docker image ls
                             """  
                     }
