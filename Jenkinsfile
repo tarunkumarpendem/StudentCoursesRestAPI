@@ -111,17 +111,17 @@ pipeline{
                     branch: "${params.Infra_Branch_Name}"
             }
         }
-        stage('Creating EKS Cluster'){
-            agent{
-                label 'node-2'
-            }
-            steps{
-                sh """
-                      terraform init
-                      terraform apply -auto-approve
-                    """  
-            }
-        }
+        // stage('Creating EKS Cluster'){
+        //     agent{
+        //         label 'node-2'
+        //     }
+        //     steps{
+        //         sh """
+        //               terraform init
+        //               terraform apply -auto-approve
+        //             """  
+        //     }
+        // }
         /*stage('Deployments'){
             agent{
                 label 'node-2'
