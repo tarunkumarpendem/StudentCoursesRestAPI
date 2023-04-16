@@ -1,12 +1,12 @@
 ---
-apiVersion: v1 
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pvc
 spec:
+  storageClassName: ebs-sc
+  accessModes:
+    - ReadWriteOnce
   resources:   
     requests:
       storage: 1Gi
-  storageClassName: ebs-sc
-  accessModes:
-    - ReadWriteOnce    
