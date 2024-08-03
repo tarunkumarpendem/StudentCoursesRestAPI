@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.13.0b4-alpine
 LABEL author=KHAJA
 LABEL blog=directdevops.blog
 ARG HOME_DIR='/studentcourses'
